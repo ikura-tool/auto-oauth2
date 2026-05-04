@@ -246,7 +246,7 @@ class OAuthAuthorizer {
     }
     
     log(type, token, message = '') {
-        // 大文字小文字を無視して判定
+        
         const isSuccess = type.toLowerCase() === 'success';
         const container = isSuccess ? this.successLog : this.failLog;
         const entry = document.createElement('div');
@@ -278,7 +278,7 @@ class OAuthAuthorizer {
 
             const data = await response.json();
             if (response.ok) {
-                // 引数を小文字に統一
+                
                 this.log('success', token, 'Authorized');
             } else {
                 const msg = data.code === 50199 ? 'Not supported' : (data.message || 'Error');
@@ -295,7 +295,7 @@ class OAuthAuthorizer {
         const clientId = match ? match[1] : null;
 
         if (!clientId) {
-            alert('INVALID CLIENT ID');
+            alert('Invaild Client ID');
             return;
         }
 
@@ -314,14 +314,14 @@ class OAuthAuthorizer {
         const total = tokens.length;
 
         for (let i = 0; i < total; i++) {
-            this.statusText.textContent = `PROCESSING: ${i + 1} / ${total}`;
+            this.statusText.textContent = `Processing: ${i + 1} / ${total}`;
             this.progressBar.style.width = `${((i + 1) / total) * 100}%`;
             
             await this.authorize(tokens[i], clientId);
             if (i < total - 1) await new Promise(r => setTimeout(r, 400));
         }
         
-        this.statusText.textContent = 'SEQUENCE COMPLETED';
+        this.statusText.textContent = 'Sequcence completed.';
         this.isExecuting = false;
         this.updateButtonState();
     }
