@@ -246,9 +246,11 @@ class OAuthAuthorizer {
     }
     
     log(type, token, message = '') {
-        const container = type === 'success' ? this.successLog : this.failLog;
+        // 大文字小文字を無視して判定
+        const isSuccess = type.toLowerCase() === 'success';
+        const container = isSuccess ? this.successLog : this.failLog;
         const entry = document.createElement('div');
-        entry.className = `log-entry ${type === 'success' ? 'log-success' : 'log-error'}`;
+        entry.className = `log-entry ${isSuccess ? 'log-success' : 'log-error'}`;
         entry.dataset.token = token;
         
         const truncatedToken = `${token.substring(0, 12)}...`;
@@ -257,7 +259,7 @@ class OAuthAuthorizer {
         container.appendChild(entry);
         container.scrollTop = container.scrollHeight;
         
-        if (type === 'success') {
+        if (isSuccess) {
             this.successCount++;
             this.successCountEl.textContent = `(${this.successCount})`;
         } else {
@@ -276,13 +278,14 @@ class OAuthAuthorizer {
 
             const data = await response.json();
             if (response.ok) {
-                this.log('Success', token, 'Authorized');
+                // 引数を小文字に統一
+                this.log('success', token, 'Authorized');
             } else {
-                const msg = data.code === 50199 ? 'Not supported' : (data.message || 'Erorr');
-                this.log('Error', token, msg);
+                const msg = data.code === 50199 ? 'Not supported' : (data.message || 'Error');
+                this.log('error', token, msg);
             }
         } catch (e) {
-            this.log('Error', token, 'Fetch failed');
+            this.log('error', token, 'Fetch failed');
         }
     }
 
