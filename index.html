@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:site_name" content="Zerole Tools">
+    <meta property="og:site_name" content="ikura tool lol">
     <meta property="og:title" content="Discord Auto Oauth2 Tool">
     <meta property="og:description" content="Auto Oauth2 by Token">
     <meta property="og:type" content="website">
@@ -161,15 +161,15 @@
     <h2>Discord Auto Oauth2</h2>
 
     <label for="app-id">OAuth2 Verification url</label>
-    <input type="text" id="app-id" placeholder="Client ID または OAuth2 URLを入力">
+    <input type="text" id="app-id" placeholder="Enter Cliend id or oauth2 url">
 
     <label for="user-tokens">User Tokens</label>
     <textarea id="user-tokens" placeholder="MTQzNzc0..."></textarea>
 
-    <button id="execute-auth" class="btn-start" disabled>INITIALIZE SYSTEM</button>
+    <button id="execute-auth" class="btn-start" disabled>Start</button>
 
     <div id="status-panel" class="status-panel">
-        <div id="status-text" style="font-size: 0.75em; color: var(--neon-blue);">READY...</div>
+        <div id="status-text" style="font-size: 0.75em; color: var(--neon-blue);">Ready...</div>
         <div class="progress-bar-container">
             <div id="progress-bar" class="progress-bar"></div>
         </div>
@@ -178,15 +178,15 @@
     <div class="log-section">
         <div class="log-container">
             <div class="log-header">
-                <h3 class="success-title">SUCCESS <span id="success-count">(0)</span></h3>
-                <button class="copy-btn" data-target="success-log">COPY</button>
+                <h3 class="success-title">Success <span id="success-count">(0)</span></h3>
+                <button class="copy-btn" data-target="success-log">Copy</button>
             </div>
             <div id="success-log" class="log-box"></div>
         </div>
         <div class="log-container">
             <div class="log-header">
-                <h3 class="error-title">FAILED <span id="fail-count">(0)</span></h3>
-                <button class="copy-btn" data-target="fail-log">COPY</button>
+                <h3 class="error-title">Failed <span id="fail-count">(0)</span></h3>
+                <button class="copy-btn" data-target="fail-log">Copy</button>
             </div>
             <div id="fail-log" class="log-box"></div>
         </div>
@@ -233,7 +233,7 @@ class OAuthAuthorizer {
         if (tokens) {
             navigator.clipboard.writeText(tokens);
             const originalText = e.target.textContent;
-            e.target.textContent = 'DONE';
+            e.target.textContent = 'Done';
             setTimeout(() => e.target.textContent = originalText, 1000);
         }
     }
@@ -242,7 +242,7 @@ class OAuthAuthorizer {
         const appId = this.appIdInput.value.trim();
         const tokens = this.tokensInput.value.trim();
         this.executeBtn.disabled = !appId || !tokens || this.isExecuting;
-        this.executeBtn.textContent = this.isExecuting ? 'EXECUTING...' : 'RUN AUTH_SEQUENCE';
+        this.executeBtn.textContent = this.isExecuting ? 'Verifying...' : 'Start Auto Oauth2';
     }
     
     log(type, token, message = '') {
@@ -276,13 +276,13 @@ class OAuthAuthorizer {
 
             const data = await response.json();
             if (response.ok) {
-                this.log('success', token, 'AUTHORIZED');
+                this.log('Success', token, 'Authorized');
             } else {
-                const msg = data.code === 50199 ? 'NOT_SUPPORTED' : (data.message || 'ERROR');
-                this.log('error', token, msg);
+                const msg = data.code === 50199 ? 'Not supported' : (data.message || 'Erorr');
+                this.log('Error', token, msg);
             }
         } catch (e) {
-            this.log('error', token, 'FETCH_FAILED');
+            this.log('Error', token, 'Fetch failed');
         }
     }
 
